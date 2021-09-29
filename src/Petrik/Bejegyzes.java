@@ -1,6 +1,8 @@
 package Petrik;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class Bejegyzes {
     private String szerzo;
@@ -10,12 +12,13 @@ public class Bejegyzes {
     private LocalDateTime szerkesztve;
 
 
-    public Bejegyzes(String szerzo, String tartalom) {
+    public Bejegyzes(String szerzo, String tartalom)
+    {
         this.szerzo = szerzo;
         this.tartalom = tartalom;
         this.likeok = 0;
         this.letrejott = LocalDateTime.now();
-        this.szerkesztve = LocalDateTime.now();
+        this.szerkesztve = this.letrejott;
     }
 
     public String getSzerzo()
@@ -31,6 +34,7 @@ public class Bejegyzes {
     public void setTartalom(String tartalom)
     {
         this.tartalom = tartalom;
+        szerkesztve = LocalDateTime.now();
     }
 
     public int getLikeok()
@@ -56,6 +60,11 @@ public class Bejegyzes {
     @Override
     public String toString()
     {
-        return this.szerzo + " - " + this.likeok + " - " + this.letrejott + "\n" + "Szerkesztve: " + this.szerkesztve + "\n" + this.tartalom;
+        DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy/MM/dd - HH:mm:ss");
+        if (szerkesztve != letrejott)
+        {
+            return String.format("%s - %d - %s\nSzerkesztve: %s\n%s", szerzo, likeok, dt.format(letrejott), dt.format(szerkesztve), tartalom);
+        }
+        else return String.format("%s - %d - %s\n%s", szerzo, likeok, dt.format(letrejott), tartalom);
     }
 }
